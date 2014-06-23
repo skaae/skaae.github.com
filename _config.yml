@@ -1,20 +1,27 @@
 # Dependencies
 markdown:         redcarpet
-pygments:         true
+highlighter:         true
 
 # Permalinks
 permalink:        pretty
 
 # Setup
-title:            Poole
-tagline:          The Jekyll Butler
-url:              http://getpoole.com
+title:            SKAAE
+tagline:          A blog...
+url:              http:/
 paginate:         1
 baseurl:          /
 author:
   name:           Mark Otto
-  url:            https://twitter.com/mdo
-  email:          markdotto@gmail.com
+  url:            https://skaae.github.com
+  email:          skaaesonderby@gmail.com
+
+# header
+pages_list:       
+  About: '/about'
+  Archive: '/archive'
+  Feed: '/atom.xml'
+
 
 # Custom vars
 version:          1.0.0
