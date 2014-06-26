@@ -11,5 +11,9 @@ The figure shows samples drawn from two different RBM's trained on the MNIST dat
 Graphical display of RBM
 ![RBM]({{ site.url }}/downloads/rbm.png)
 ## Contrastive divergence
+<iframe width="420" height="315" src="http://youtu.be/tD3kQmqNHw0" frameborder="0" allowfullscreen></iframe>
+
 
 ## Persistent Contrastive Divergence 
+<iframe width="420" height="315" src="http://youtu.be/c0xdBV70fgE" frameborder="0" allowfullscreen></iframe>
+
