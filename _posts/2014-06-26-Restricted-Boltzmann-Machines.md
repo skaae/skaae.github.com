@@ -10,15 +10,19 @@ The figure shows samples drawn from two different RBM's trained on the MNIST dat
 A RBM is a two layer bipartite graph. The bottom layer is usually called the visible layer and the top layer is the hidden layer. In our model the units in the visible and hidden layer will be binary stochastic units. The RBM is a energy based model where the energy is given by:
 
 $$ 
-E(\mathbf{v},\mathbf{j}) = -\sum_{i\in \text{visible}} b_i v_i -\sum_{i\in \text{hidden}} c_j h_j - \sum^{}_{i,j}v_i h_j w_{ij} 
+E(\mathbf{v},\mathbf{h}) = -\sum_{i\in \text{visible}} b_i v_i -\sum_{i\in \text{hidden}} c_j h_j - \sum^{}_{i,j} v_i h_j w_{ij} 
 $$
-
-We define the joint probability of a visible and a hidden vector to be:
+Here  $$ w_{ij} $$ is the weight betweeen visible unit i and hidden unit j. $$ b_{i} $$ is the bias for visible unit i and $$ c_j $$ is the bias for hidden unit j. We define the joint probability of a visible and a hidden vector to be:
 \[\begin{aligned}
-p(\mathbf{v},\mathbf{j}) &= \frac{1}{Z}e^{-E(\mathbf{v},\mathbf{j})}\\
-Z &= \sum_{\mathbf{v},\mathbf{j}} e^{-E(\mathbf{v},\mathbf{j})}
+p(\mathbf{v},\mathbf{h}) &= \frac{1}{Z}e^{-E(\mathbf{v},\mathbf{h})}\\
+Z &= \sum_{\mathbf{v},\mathbf{h}} e^{-E(\mathbf{v},\mathbf{h})}
 \end{aligned} \]
+Here $$Z$$ is the partition function given by summing over all possible pairs of visible and hidden vectors.
+The probability that the network assigns to a visible vector, v, is given by summing over all possible hidden vectors:
 
+$$
+p(\mathbf{v}) = \frac{1}{Z} \sum_{\mathbf{h}} e^{-E(\mathbf{v},\mathbf{h})}
+$$
 
 The probability of hidden unit j being one is given by:
 
@@ -35,7 +39,6 @@ $$
 Here $$\sigma$$ is the sigmoid function.
 
 
-Here  $$ w_{ij} $$ is the weight betweeen visible unit i and hidden unit j. $$ b_{i} $$ is the bias for visible unit i and $$ c_j $$ is the bias for hidden unit j
 
 Here is an example MathJax inline rendering $$ 1/x^{2} $$, and here is a block rendering: 
 
