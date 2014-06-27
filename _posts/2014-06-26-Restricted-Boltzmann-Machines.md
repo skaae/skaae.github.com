@@ -7,7 +7,7 @@ This post tries to reproduce a figure 4 in the paper ["Training Restricted Boltz
 
 The figure shows samples drawn from two different RBM's trained on the MNIST data set. The first RBM is trained with persistent contrastive divergence (PCD) and the second RBM is trained with contrastive divergence (CD). 
 
-A RBM is a two layer bipartite graph. The bottom layer is usually called the visible layer and the top layer is the hidden layer. In our model the units in the visible and hidden layer will be binary stochastic units. The RBM is a energy based model where the energy is given by:
+A RBM is a two layer bipartite graph which tries to model some distribution over data. The bottom layer is usually called the visible layer and the top layer is the hidden layer. In our model the units in the visible and hidden layer will be binary stochastic units. The RBM is a energy based model where the energy is given by:
 
 $$ 
 E(\mathbf{v},\mathbf{h}) = -\sum_{i\in \text{visible}} b_i v_i -\sum_{i\in \text{hidden}} c_j h_j - \sum^{}_{i,j} v_i h_j w_{ij} 
@@ -29,19 +29,52 @@ $$
 p(\mathbf{v}) = \frac{1}{Z} \sum_{\mathbf{h}} e^{-E(\mathbf{v},\mathbf{h})}
 $$
 
-The probability of hidden unit j being one is given by:
+We want the RBM to assign high probability, i.e low energy, to images in our dataset. To do this we adjust the weights and biases such that images in the data set gets lower energy and other images get higher energy, see [A practical guide to training restricted Boltzmann machines](https://www.cs.toronto.edu/~hinton/absps/guideTR.pdf) for a better explanation. 
+The update rule for stochastic gradient *ascent* can be shown to be:
 
 $$
-p(h_j = 1 | \mathbf{v}) = \sigma(c_j + \sum_i v_i w_{ij})
+\Delta w_{ij} = \epsilon (<v_i h_j>_\text{data} - <v_i h_j>_\text{model})
+$$ 
+
+Where $$<>$$ denote expectation under the distribution specified by the subscript that follows. 
+Getting a sample from $$<v_i h_j>_\text{data}$$ is easy, by noting that the probability of a hidden unit given a visible vector is given by:
+
+$$
+p(h_j = 1 | \mathbf{v}) = \sigma(c_j + \sum_i v_i w_{ij})   \qquad \text(RBMUP)
 $$
 
 and for visible unit i the probability is given by:
 
 $$
-p(v_i = 1 | \mathbf{h}) = \sigma(b_i + \sum_j h_j w_{ij})
+p(v_i = 1 | \mathbf{h}) = \sigma(b_i + \sum_j h_j w_{ij})  \qquad \text(RBMDOWN)
 $$
 
-Here $$\sigma$$ is the sigmoid function.
+Here $$\sigma$$ is the sigmoid function. Getting a sample from $$<v_i h_j>_\text{model}$$ is can be done by gibbs sampling. We start at a random visible vector and perform alternating gibbs sampling for a long time, in gibbs sampling we use the above two equation to repeatedly update  the hidden units given the visible units and then the visible units given the hidden units. 
+
+This procedure is impractical because gibbs ampling is slow. An alternative to get a sample from $$<v_i h_j>_\text{model}$$ is to "clamp" a data vector to the visible units, update the hidden units and then reconstruct the visible units. The update procedure then becomes: 
+
+$$
+\Delta w_{ij} = \epsilon (<v_i h_j>_\text{data} - <v_i h_j>_\text{recon})
+$$ 
+The above training procedure is called contrastive divergence (CD). In MATLAB a the code to get a sample from 
+$$<v_i h_j>_\text{data}$$ (positive phase) and $$<v_i h_j>_\text{recon}$$ (negative phase) is:
+
+```
+% collect statistics
+v0 = data;
+h0 = rbmup(rbm,v0,@sigmrnd);
+v1 = rbmdown(rbm,v0,@sigmrnd);
+h1 = rbmup(rbm,v0,@sigmrnd);
+
+% calculate gradients
+positive_phase = h0' * v0;
+negative_phase = h1' * v1;
+
+dw = positive_phase - negative_phase;
+db =  sum(v0 - v1)';
+dc =  sum(h0 - h1)';
+
+```
 
 
 ![RBM]({{ site.url }}/downloads/rbm.png)
