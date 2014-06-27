@@ -12,11 +12,16 @@ A RBM is a two layer bipartite graph. The bottom layer is usually called the vis
 $$ 
 E(\mathbf{v},\mathbf{h}) = -\sum_{i\in \text{visible}} b_i v_i -\sum_{i\in \text{hidden}} c_j h_j - \sum^{}_{i,j} v_i h_j w_{ij} 
 $$
+
 Here  $$ w_{ij} $$ is the weight betweeen visible unit i and hidden unit j. $$ b_{i} $$ is the bias for visible unit i and $$ c_j $$ is the bias for hidden unit j. We define the joint probability of a visible and a hidden vector to be:
-\[\begin{aligned}
-p(\mathbf{v},\mathbf{h}) &= \frac{1}{Z}e^{-E(\mathbf{v},\mathbf{h})}\\
-Z &= \sum_{\mathbf{v},\mathbf{h}} e^{-E(\mathbf{v},\mathbf{h})}
-\end{aligned} \]
+
+$$
+p(\mathbf{v},\mathbf{h}) = \frac{1}{Z}e^{-E(\mathbf{v},\mathbf{h})}
+$$
+
+$$
+Z = \sum_{\mathbf{v},\mathbf{h}} e^{-E(\mathbf{v},\mathbf{h})}
+$$
 Here $$Z$$ is the partition function given by summing over all possible pairs of visible and hidden vectors.
 The probability that the network assigns to a visible vector, v, is given by summing over all possible hidden vectors:
 
@@ -37,10 +42,6 @@ p(v_i = 1 | \mathbf{h}) = \sigma(b_i + \sum_j h_j w_{ij})
 $$
 
 Here $$\sigma$$ is the sigmoid function.
-
-
-
-Here is an example MathJax inline rendering $$ 1/x^{2} $$, and here is a block rendering: 
 
 
 ![RBM]({{ site.url }}/downloads/rbm.png)
