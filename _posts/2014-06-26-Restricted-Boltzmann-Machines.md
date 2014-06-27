@@ -81,6 +81,7 @@ The above training procedure is called contrastive divergence (CD).  $$<v_i h_j>
 ## Contrastive divergence
 
 Samples drawn from RBM trained with contrastive divergence
+
 <iframe src="//www.youtube.com/embed/tD3kQmqNHw0" width="500" height="500" ></iframe>
 
 
@@ -88,6 +89,7 @@ Samples drawn from RBM trained with contrastive divergence
 ## Persistent Contrastive Divergence 
 
 Samples drawn from RBM trained with persistent contrastive divergence
+
 <iframe src="//www.youtube.com/embed/c0xdBV70fgE" width="500" height="500" ></iframe>
 
 # hinton DBN
