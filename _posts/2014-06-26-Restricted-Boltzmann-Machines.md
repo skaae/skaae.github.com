@@ -7,10 +7,13 @@ This post tries to reproduce a figure 4 in the paper ["Training Restricted Boltz
 
 The figure shows samples drawn from two different RBM's trained on the MNIST data set. The first RBM is trained with persistent contrastive divergence (PCD) and the second RBM is trained with contrastive divergence (CD). 
 
-A RBM is a two layer bipartite graph. The bottom layer is usually called the visible layer and the top layer is the hidden layer. The 
+A RBM is a two layer bipartite graph. The bottom layer is usually called the visible layer and the top layer is the hidden layer. The RBM is a energy based model where the energy is given by:
+\\[ E = -\sum_{i\in \text{visible}} b_i v_i -\sum_{i\in \text{hidden}} c_j h_j - \sum^{}_{i,j}v_i h_j w_{ij} \\]
+
+Here  \\( w_{ij} \\) is the weight betweeen visible unit i and hidden unit j. \\( b_{i} \\) is the bias for visible unit i and \\( c_j \\) is the bias for hidden unit j
 
 Here is an example MathJax inline rendering \\( 1/x^{2} \\), and here is a block rendering: 
-\\[ \frac{1}{n^{2}} \\]
+
 
 ![RBM]({{ site.url }}/downloads/rbm.png)
 ## Contrastive divergence
