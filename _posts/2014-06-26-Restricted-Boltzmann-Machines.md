@@ -7,6 +7,8 @@ This post tries to reproduce a figure 4 in the paper ["Training Restricted Boltz
 
 The figure shows samples drawn from two different RBM's trained on the MNIST data set. The first RBM is trained with persistent contrastive divergence (PCD) and the second RBM is trained with contrastive divergence (CD). 
 
+![RBM]({{ site.url }}/downloads/rbm.png)
+
 A RBM is a two layer bipartite graph which tries to model some distribution over data. The bottom layer is usually called the visible layer and the top layer is the hidden layer. In our model the units in the visible and hidden layer will be binary stochastic units. The RBM is a energy based model where the energy is given by:
 
 $$ 
@@ -76,18 +78,16 @@ The above training procedure is called contrastive divergence (CD).  $$<v_i h_j>
     dc =  sum(h0 - h1)';
 
 
-
-
-
-![RBM]({{ site.url }}/downloads/rbm.png)
-
 ## Contrastive divergence
 
+Samples drawn from RBM trained with contrastive divergence
 <iframe src="//www.youtube.com/embed/tD3kQmqNHw0" width="500" height="500" ></iframe>
 
 
 
 ## Persistent Contrastive Divergence 
+
+Samples drawn from RBM trained with persistent contrastive divergence
 <iframe src="//www.youtube.com/embed/c0xdBV70fgE" width="500" height="500" ></iframe>
 
 # hinton DBN
