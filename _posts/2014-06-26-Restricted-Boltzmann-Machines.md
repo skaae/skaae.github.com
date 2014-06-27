@@ -56,25 +56,27 @@ This procedure is impractical because gibbs ampling is slow. An alternative to g
 $$
 \Delta w_{ij} = \epsilon (<v_i h_j>_\text{data} - <v_i h_j>_\text{recon})
 $$ 
+
 The above training procedure is called contrastive divergence (CD).  $$<v_i h_j>_\text{data}$$ is called positive phase and $$<v_i h_j>_\text{recon}$$ negative phase. In MATLAB the following code first collect the statistics and then calculates the gradients. In CD it is important to sample the value of h0 and v1, $$@sigmrnd$$ applies the sigmoid function and samples the units based on the caluculated probabilities. In the last update of h1 we do not sample because it introduces ampling noise in the calculations, i.e we use $$@sigm$$. 
 
-```
-% collect statistics
-v0 = data;
-h0 = rbmup(rbm,v0,@sigmrnd);
-v1 = rbmdown(rbm,v0,@sigmrnd);
-h1 = rbmup(rbm,v0,@sigm);
 
-% calculate positive and negative phase
-positive_phase = h0' * v0;
-negative_phase = h1' * v1;
+    % collect statistics
+    v0 = data;
+    h0 = rbmup(rbm,v0,@sigmrnd);
+    v1 = rbmdown(rbm,v0,@sigmrnd);
+    h1 = rbmup(rbm,v0,@sigm);
 
-%calculate gradients
-dw = positive_phase - negative_phase;
-db =  sum(v0 - v1)';
-dc =  sum(h0 - h1)';
+    % calculate positive and negative phase
+    positive_phase = h0' * v0;
+    negative_phase = h1' * v1;
 
-```
+    %calculate gradients
+    dw = positive_phase - negative_phase;
+    db =  sum(v0 - v1)';
+    dc =  sum(h0 - h1)';
+
+
+
 
 
 ![RBM]({{ site.url }}/downloads/rbm.png)
