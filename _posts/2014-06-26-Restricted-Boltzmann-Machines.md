@@ -8,12 +8,14 @@ This post tries to reproduce a figure 4 in the paper ["Training Restricted Boltz
 The figure shows samples drawn from two different RBM's trained on the MNIST data set. The first RBM is trained with persistent contrastive divergence (PCD) and the second RBM is trained with contrastive divergence (CD). 
 
  Test youtube.rb
-Graphical display of RBM
+Graphical display of RBM skldfjas some test
 ![RBM]({{ site.url }}/downloads/rbm.png)
 ## Contrastive divergence
-{% youtube tD3kQmqNHw0 %}
+<iframe src="//www.youtube.com/embed/tD3kQmqNHw0" ></iframe>
+
 
 ## Persistent Contrastive Divergence 
-{% youtube c0xdBV70fgE %}
+<iframe src="//www.youtube.com/embed/c0xdBV70fgE" ></iframe>
+
 
 
