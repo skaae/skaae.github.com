@@ -7,29 +7,38 @@ This post tries to reproduce a figure 4 in the paper ["Training Restricted Boltz
 
 The figure shows samples drawn from two different RBM's trained on the MNIST data set. The first RBM is trained with persistent contrastive divergence (PCD) and the second RBM is trained with contrastive divergence (CD). 
 
-A RBM is a two layer bipartite graph. The bottom layer is usually called the visible layer and the top layer is the hidden layer. In our model the units in the visible and hidden layer will be binary stochastic units. The probability of hidden unit j being one is given by:
+A RBM is a two layer bipartite graph. The bottom layer is usually called the visible layer and the top layer is the hidden layer. In our model the units in the visible and hidden layer will be binary stochastic units. The RBM is a energy based model where the energy is given by:
+
+$$ 
+E(\mathbf{v},\mathbf{j}) = -\sum_{i\in \text{visible}} b_i v_i -\sum_{i\in \text{hidden}} c_j h_j - \sum^{}_{i,j}v_i h_j w_{ij} 
+$$
+
+We define the joint probability of a visible and a hidden vector to be:
+\[\begin{aligned}
+p(\mathbf{v},\mathbf{j}) &= \frac{1}{Z}e^{-E(\mathbf{v},\mathbf{j})}\\
+Z &= \sum_{\mathbf{v},\mathbf{j}} e^{-E(\mathbf{v},\mathbf{j})}
+\end{aligned} \]
+
+
+The probability of hidden unit j being one is given by:
 
 $$
-p(h_j = 1 | v) = \sigma(c_j + \sum_i v_i w_{ij})
+p(h_j = 1 | \mathbf{v}) = \sigma(c_j + \sum_i v_i w_{ij})
 $$
 
 and for visible unit i the probability is given by:
 
 $$
-p(v_i = 1 | h) = \sigma(b_i + \sum_j h_j w_{ij})
+p(v_i = 1 | \mathbf{h}) = \sigma(b_i + \sum_j h_j w_{ij})
 $$
 
 Here $$\sigma$$ is the sigmoid function.
-
-The RBM is a energy based model where the energy is given by:
 
 
 Here  $$ w_{ij} $$ is the weight betweeen visible unit i and hidden unit j. $$ b_{i} $$ is the bias for visible unit i and $$ c_j $$ is the bias for hidden unit j
 
 Here is an example MathJax inline rendering $$ 1/x^{2} $$, and here is a block rendering: 
-$$ 
-E(v,h) = -\sum_{i\in \text{visible}} b_i v_i -\sum_{i\in \text{hidden}} c_j h_j - \sum^{}_{i,j}v_i h_j w_{ij} 
-$$
+
 
 ![RBM]({{ site.url }}/downloads/rbm.png)
 
