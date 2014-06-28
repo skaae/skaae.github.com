@@ -114,22 +114,49 @@ I.e we start at the data and do a single Gibbs step and collect the statistics. 
     h1 = rbmup(rbm,vk,@sigm);
     markovchains = v1;
 
-the state of the markov chains are stored in the ´markovchains´ variable. Before training we initialize the markov chains to some random datapoints. 
-
+the state of the Markov chains are stored in the ´markovchains´ variable. Before training we initialize the markov chains to some random data points. 
 
 ## Training RBM's with CD and PCD
 
-Samples drawn from RBM trained with contrastive divergence
+To reproduce figure 4 a RBM was trained on the MNISt dataset. The RBM has  784 visible units and 500 hidden units are trained first with CD and then with PCD. 
+We then draw samples from the RBM. The following function was used to draw samples from the RBM:
+
+    function [vis_sampled] = rbmsample(rbm,n,k)
+    %RBMSAMPLE generate n samples from RBM using gibbs sampling with k steps
+    %   INPUTS:
+    %       rbm               : a rbm struct
+    %       n                 : number of samples
+    %       k                 : number of gibbs steps 
+    %   OUTPUTS
+    %       vis_samples       : samples as a samples-by-n matrix
+
+    % create n random binary starting vectors based on bias
+    bx = repmat(rbm.b',n,1);
+    vis_sampled = double(bx > rand(size(bx)));
+
+    for i = 1:k
+        hid_sampled = rbmup(rbm,vis_sampled,@sigmrnd);
+        vis_sampled = rbmdown(rbm,hid_sampled,@sigmrnd);
+
+    end
+        hid_sampled = rbmup(rbm,vis_sampled,@sigmrnd);
+        vis_sampled = rbmdown(rbm,hid_sampled,@sigm);
+    end
+
+Note that we start at a random vector sampled from the probabilities given by the bias to the visible vectors. 
+Initializing the visible vectors at random will not produce any digits. 
+
+The videos below show how the RBM's converge. I did 1000 Gibbs steps and recorded the reconstruction for every 10th gibbs step.
+
+Samples drawn from RBM trained with CD
 
 <iframe src="//www.youtube.com/embed/tD3kQmqNHw0" width="500" height="500" ></iframe>
-
-
-
-## Persistent Contrastive Divergence 
 
 Samples drawn from RBM trained with persistent contrastive divergence
 
 <iframe src="//www.youtube.com/embed/c0xdBV70fgE" width="500" height="500" ></iframe>
+
+
 
 # hinton DBN
 The network was trained in two stages – pretraining and fine-tuning. The layer-by-
