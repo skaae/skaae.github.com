@@ -157,10 +157,28 @@ Samples drawn from RBM trained with PCD
 
 <iframe src="//www.youtube.com/embed/c0xdBV70fgE" width="500" height="500" ></iframe>
 
+To reproduce the above figures download https://github.com/skaae/DeepLearnToolbox_noGPU/ and 
+run
 
-
-# hinton DBN
-The network was trained in two stages – pretraining and fine-tuning. The layer-by-
-layer pretraining was the same as in the previous section, except that when training the top layer of 2000 feature detectors, each “data” vector had 510 components. The first 500 were the activation probabilities of the 500 feature detectors in the penultimate layer and the last 10 were the label values. The value of the correct label was set to 1 and the remainder were set to 0. So the top layer of feature detectors learns to model the joint distribution of the 500 penultimate features and the 10 labels.
+        load mnist_uint8;
+        train_x = double(train_x) / 255;
+        test_x  = double(test_x)  / 255;
+        rand('state',0)
+        dbn.sizes = [500];
+        opts.traintype = 'PCD';  % PCD | CD 
+        opts.numepochs =   100; % probably way to high?
+        opts.batchsize = 100;
+        opts.cdn = 1; % contrastive divergence
+        T = 50;       % momentum ramp up
+        p_f = 0.9;    % final momentum
+        p_i = 0.5;    % initial momentum
+        eps = 0.05;    % initial learning rate
+        f = 0.95;     % learning rate decay
+        opts.learningrate = @(t,momentum) eps.*f.^t*(1-momentum); 
+        opts.momentum     = @(t) ifelse(t < T, p_i*(1-t/T)+(t/T)*p_f,p_f);
+        opts.L2 = 0.00;
+        dbn = dbnsetup(dbn, train_x, opts);
+        dbn = dbntrain(dbn, train_x, opts,test_x);
+        rbmsampledbnmovie(dbn,50,1000,'vid.avi',10,@visualize);
 
 
