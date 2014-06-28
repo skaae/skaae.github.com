@@ -68,7 +68,7 @@ The above training procedure is called contrastive divergence (CD).  $$<v_i h_j>
 
 Below we is a basic implementation of a single weight update for a RBM using contrastive divergence:
 
-```matlab
+```
 % helper functions 
 function x = rbmup(rbm, x,act)
     x = act(repmat(rbm.c', size(x, 1), 1) + x * rbm.W');
@@ -113,7 +113,7 @@ rbm.c = rbm.c + epsilon * dc / minibatch_size;
 
 I.e we start at the data and do a single Gibbs step and collect the statistics. In PCD we collect the positive statistics the same way as in CD. In the negative phase we use a "persistent" number of Markov chains which are not resent between weight updates, i.e each time we collect the negative statistics we start the Markov chain where it ended last time. The number of Markov chains is usually equal to the size of the mini batches. In the MATLAB code the collection of negative statics then becomes
  
-```matlab 
+``` 
 hid = rbmup(rbm,markovchains,@sigmrnd);
 v1 = rbmdown(rbm,hid,@sigmrnd);
 h1 = rbmup(rbm,vk,@sigm);
@@ -126,7 +126,7 @@ the state of the Markov chains are stored in the ´markovchains´ variable. Befo
 To reproduce figure 4 a RBM was trained on the MNISt dataset. The RBM has  784 visible units and 500 hidden units are trained first with CD and then with PCD. 
 We then draw samples from the RBM. The following function was used to draw samples from the RBM:
 
-```matlab
+```
 function [vis_sampled] = rbmsample(rbm,n,k)
 %RBMSAMPLE generate n samples from RBM using gibbs sampling with k steps
 %   INPUTS:
@@ -166,7 +166,7 @@ Samples drawn from RBM trained with PCD
 To reproduce the above figures download https://github.com/skaae/DeepLearnToolbox_noGPU/ and 
 run
 
-```matlab
+```
 load mnist_uint8;
 train_x = double(train_x) / 255;
 test_x  = double(test_x)  / 255;
