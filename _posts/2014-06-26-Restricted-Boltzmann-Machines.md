@@ -68,7 +68,7 @@ The above training procedure is called contrastive divergence (CD).  $$<v_i h_j>
 
 Below we is a basic implementation of a single weight update for a RBM using contrastive divergence:
 
-```
+```Matlab
 % helper functions 
 function x = rbmup(rbm, x,act)
     x = act(repmat(rbm.c', size(x, 1), 1) + x * rbm.W');
@@ -125,7 +125,7 @@ the state of the Markov chains are stored in the ´markovchains´ variable. Befo
 To reproduce figure 4 a RBM was trained on the MNISt dataset. The RBM has  784 visible units and 500 hidden units are trained first with CD and then with PCD. 
 We then draw samples from the RBM. The following function was used to draw samples from the RBM:
 
-```
+```Matlab
 function [vis_sampled] = rbmsample(rbm,n,k)
 %RBMSAMPLE generate n samples from RBM using gibbs sampling with k steps
 %   INPUTS:
@@ -165,7 +165,7 @@ Samples drawn from RBM trained with PCD
 To reproduce the above figures download https://github.com/skaae/DeepLearnToolbox_noGPU/ and 
 run
 
-```
+```Matlab
 load mnist_uint8;
 train_x = double(train_x) / 255;
 test_x  = double(test_x)  / 255;
