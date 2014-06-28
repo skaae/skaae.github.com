@@ -6,8 +6,8 @@ highlighter:         true
 permalink:        pretty
 
 # Setup
-title:            SKAAE
-tagline:          A blog...
+title:            ...
+tagline:          ...
 url:              http://skaae.github.io/
 paginate:         1
 baseurl:          http://skaae.github.io/
