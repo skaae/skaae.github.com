@@ -5,10 +5,11 @@ title: Training Restricted Boltzmann Machines
 ---
 This post tries to reproduce a figure 4 in the paper ["Training Restricted Boltzmann Machines using Approximations to the Likelihood Gradient"](http://www.cs.utoronto.ca/~tijmen/pcd/pcd.pdf). The paper present "persistent contrastive divergence" (PCD) a new training algorithm restricted Boltzmann machines. PCD is compared to ["contrastive divergence"](http://learning.cs.toronto.edu/~hinton/csc2535/readings/nccd.pdf) (CD).
 
-
-![RBM]({{ site.url }}/downloads/rbm.png)
+![Figure 4]({{ site.url }}/downloads/figure4.png)
 
 A RBM is a two layer bipartite graph which tries to model some distribution over data. In a RBM there is no connections between hidden units and no connections between visible units. The central equations for RBM's are shown below, [A practical guide to training restricted Boltzmann machines](http://www.csri.utoronto.ca/~hinton/absps/guideTR.pdf) is a more in debt description.
+
+![RBM]({{ site.url }}/downloads/rbm.png)
 
 In a RBM the bottom layer is usually called the visible layer and the top layer is the hidden layer. In our model the units in the visible and hidden layer will be binary stochastic units. The RBM is a energy based model where the energy is given by:
 
@@ -93,10 +94,10 @@ Below we is a basic implementation of a single weight update for a RBM using con
     db =  sum(v0 - v1)';
     dc =  sum(h0 - h1)';
 
-    % update weights
-    rbm.W = rbm.W + dw / minibatch_size;
-    rbm.b = rbm.b + db / minibatch_size;
-    rbm.c = rbm.c + dc / minibatch_size;
+    % update weights - epsilon is the learning rate
+    rbm.W = rbm.W + epsilon * dw / minibatch_size;
+    rbm.b = rbm.b + epsilon * db / minibatch_size;
+    rbm.c = rbm.c + epsilon * dc / minibatch_size;
 
 ´@sigmrnd´ and ´@sigm´ determines whether the probabilities from the logistic function should used (´@sigm´) or if the states should be sampled randomly based on the probabilities (´@sigmrnd´).
 
@@ -146,13 +147,13 @@ We then draw samples from the RBM. The following function was used to draw sampl
 Note that we start at a random vector sampled from the probabilities given by the bias to the visible vectors. 
 Initializing the visible vectors at random will not produce any digits. 
 
-The videos below show how the RBM's converge. I did 1000 Gibbs steps and recorded the reconstruction for every 10th gibbs step.
+The videos below show how the RBM's converge. I did 1000 Gibbs steps and recorded the reconstruction for every 10th Gibbs step.
 
 Samples drawn from RBM trained with CD
 
 <iframe src="//www.youtube.com/embed/tD3kQmqNHw0" width="500" height="500" ></iframe>
 
-Samples drawn from RBM trained with persistent contrastive divergence
+Samples drawn from RBM trained with PCD
 
 <iframe src="//www.youtube.com/embed/c0xdBV70fgE" width="500" height="500" ></iframe>
 
