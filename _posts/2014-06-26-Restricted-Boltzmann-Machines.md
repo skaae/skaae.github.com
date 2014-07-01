@@ -123,8 +123,15 @@ the state of the Markov chains are stored in the ´markovchains´ variable. Befo
 
 ## Training RBM's with CD and PCD
 
-To reproduce figure 4 a RBM was trained on the MNISt dataset. The RBM has  784 visible units and 500 hidden units are trained first with CD and then with PCD. 
-We then draw samples from the RBM. The following function was used to draw samples from the RBM:
+To reproduce figure 4 a RBM was trained on the MNISt dataset. The RBM has  784 visible units and 500 hidden units are trained first with CD and then with PCD.
+
+
+The weights learned by PCD and CD can be vizualized:
+
+![Figure 4]({{ site.url }}/downloads/filters.png)
+
+
+To vizualize the distribution the RBM's has learnt we draw samples from the RBM. The following function was used to draw samples from the RBM:
 
 ```
 function [vis_sampled] = rbmsample(rbm,n,k)
@@ -150,8 +157,7 @@ end
 end
 ```
 
-Note that we start at a random vector sampled from the probabilities given by the bias to the visible vectors. 
-Initializing the visible vectors at random will not produce any digits. 
+Note that we start at a random vector sampled from the probabilities given by the bias to the visible vectors. Initializing the visible vectors at random will not produce any digits. 
 
 The videos below show how the RBM's converge. I did 1000 Gibbs steps and recorded the reconstruction for every 10th Gibbs step.
 
@@ -162,6 +168,8 @@ Samples drawn from RBM trained with CD
 Samples drawn from RBM trained with PCD
 
 <iframe src="//www.youtube.com/embed/c0xdBV70fgE" width="500" height="500" ></iframe>
+
+From the movies it is clear that the PCD RBM has learnt a better distribution over digits than the CD trained RBM. 
 
 To reproduce the above figures download https://github.com/skaae/DeepLearnToolbox_noGPU/ and 
 run
