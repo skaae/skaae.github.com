@@ -181,5 +181,5 @@ run
          opts = dbncreateopts();
          dbn = dbnsetup(dbn, train_x, opts);
          dbn = dbntrain(dbn, train_x, opts);
-         digits = dbnsample(dbn,50,1000);
+         digits = sampledbnmovie(dbn,100,1000,'PCD',1,@visualize);
          visualize(digits')
