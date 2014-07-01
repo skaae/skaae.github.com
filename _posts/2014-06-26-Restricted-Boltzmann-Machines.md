@@ -68,39 +68,39 @@ The above training procedure is called contrastive divergence (CD).  $$<v_i h_j>
 
 Below we is a basic implementation of a single weight update for a RBM using contrastive divergence:
 
-```
-% helper functions 
-function x = rbmup(rbm, x,act)
-    x = act(repmat(rbm.c', size(x, 1), 1) + x * rbm.W');
-end
 
-function x = rbmdown(rbm, x,act)
-    x = act(repmat(rbm.b', size(x, 1), 1) + x * rbm.W);
-end
+	% helper functions 
+	function x = rbmup(rbm, x,act)
+	    x = act(repmat(rbm.c', size(x, 1), 1) + x * rbm.W');
+	end
 
-%% collect statistics
-% positive phase
-v0 = data;  %clamp data to visible units
-h0 = rbmup(rbm,v0,@sigmrnd);
+	function x = rbmdown(rbm, x,act)
+	    x = act(repmat(rbm.b', size(x, 1), 1) + x * rbm.W);
+	end
 
-% negative phase
-v1 = rbmdown(rbm,v0,@sigmrnd);
-h1 = rbmup(rbm,v0,@sigm);
+	%% collect statistics
+	% positive phase
+	v0 = data;  %clamp data to visible units
+	h0 = rbmup(rbm,v0,@sigmrnd);
 
-% calculate positive and negative phase
-positive_phase = h0' * v0;
-negative_phase = h1' * v1;
+	% negative phase
+	v1 = rbmdown(rbm,v0,@sigmrnd);
+	h1 = rbmup(rbm,v0,@sigm);
 
-%calculate gradients
-dw = positive_phase - negative_phase;
-db =  sum(v0 - v1)';
-dc =  sum(h0 - h1)';
+	% calculate positive and negative phase
+	positive_phase = h0' * v0;
+	negative_phase = h1' * v1;
 
-% update weights - epsilon is the learning rate
-rbm.W = rbm.W + epsilon * dw / minibatch_size;
-rbm.b = rbm.b + epsilon * db / minibatch_size;
-rbm.c = rbm.c + epsilon * dc / minibatch_size;
-```
+	%calculate gradients
+	dw = positive_phase - negative_phase;
+	db =  sum(v0 - v1)';
+	dc =  sum(h0 - h1)';
+
+	% update weights - epsilon is the learning rate
+	rbm.W = rbm.W + epsilon * dw / minibatch_size;
+	rbm.b = rbm.b + epsilon * db / minibatch_size;
+	rbm.c = rbm.c + epsilon * dc / minibatch_size;
+
 
 `@sigmrnd` and `@sigm` determines whether the probabilities from the logistic function should used (`@sigm`) or if the states should be sampled randomly based on the probabilities (`@sigmrnd`).
 
@@ -113,11 +113,11 @@ rbm.c = rbm.c + epsilon * dc / minibatch_size;
 
 I.e we start at the data and do a single Gibbs step and collect the statistics. In PCD we collect the positive statistics the same way as in CD. In the negative phase we use a "persistent" number of Markov chains which are not resent between weight updates, i.e each time we collect the negative statistics we start the Markov chain where it ended last time. The number of Markov chains is usually equal to the size of the mini batches. In the MATLAB code the collection of negative statics then becomes
  
-``` 
-hid = rbmup(rbm,markovchains,@sigmrnd);
-v1 = rbmdown(rbm,hid,@sigmrnd);
-h1 = rbmup(rbm,vk,@sigm);
-```
+
+	hid = rbmup(rbm,markovchains,@sigmrnd);
+	v1 = rbmdown(rbm,hid,@sigmrnd);
+	h1 = rbmup(rbm,vk,@sigm);
+
 
 the state of the Markov chains are stored in the ´markovchains´ variable. Before training we initialize the markov chains to some random data points. 
 
@@ -133,29 +133,29 @@ The weights learned by PCD and CD can be vizualized:
 
 To vizualize the distribution the RBM's has learnt we draw samples from the RBM. The following function was used to draw samples from the RBM:
 
-```
-function [vis_sampled] = rbmsample(rbm,n,k)
-%RBMSAMPLE generate n samples from RBM using gibbs sampling with k steps
-%   INPUTS:
-%       rbm               : a rbm struct
-%       n                 : number of samples
-%       k                 : number of gibbs steps 
-%   OUTPUTS
-%       vis_samples       : samples as a samples-by-n matrix
 
-% create n random binary starting vectors based on bias
-bx = repmat(rbm.b',n,1);
-vis_sampled = double(bx > rand(size(bx)));
+	function [vis_sampled] = rbmsample(rbm,n,k)
+	%RBMSAMPLE generate n samples from RBM using gibbs sampling with k steps
+	%   INPUTS:
+	%       rbm               : a rbm struct
+	%       n                 : number of samples
+	%       k                 : number of gibbs steps 
+	%   OUTPUTS
+	%       vis_samples       : samples as a samples-by-n matrix
 
-for i = 1:k
-    hid_sampled = rbmup(rbm,vis_sampled,@sigmrnd);
-    vis_sampled = rbmdown(rbm,hid_sampled,@sigmrnd);
+	% create n random binary starting vectors based on bias
+	bx = repmat(rbm.b',n,1);
+	vis_sampled = double(bx > rand(size(bx)));
 
-end
-    hid_sampled = rbmup(rbm,vis_sampled,@sigmrnd);
-    vis_sampled = rbmdown(rbm,hid_sampled,@sigm);
-end
-```
+	for i = 1:k
+	    hid_sampled = rbmup(rbm,vis_sampled,@sigmrnd);
+	    vis_sampled = rbmdown(rbm,hid_sampled,@sigmrnd);
+
+	end
+	    hid_sampled = rbmup(rbm,vis_sampled,@sigmrnd);
+	    vis_sampled = rbmdown(rbm,hid_sampled,@sigm);
+	end
+
 
 Note that we start at a random vector sampled from the probabilities given by the bias to the visible vectors. Initializing the visible vectors at random will not produce any digits. 
 
@@ -174,25 +174,24 @@ From the movies it is clear that the PCD RBM has learnt a better distribution ov
 To reproduce the above figures download https://github.com/skaae/DeepLearnToolbox_noGPU/ and 
 run
 
-```
-load mnist_uint8;
-train_x = double(train_x) / 255;
-test_x  = double(test_x)  / 255;
-rand('state',0)
-dbn.sizes = [500];
-opts.traintype = 'PCD';  % PCD | CD 
-opts.numepochs =   100; % probably way to high?
-opts.batchsize = 100;
-opts.cdn = 1; % contrastive divergence
-T = 50;       % momentum ramp up
-p_f = 0.9;    % final momentum
-p_i = 0.5;    % initial momentum
-eps = 0.05;    % initial learning rate
-f = 0.95;     % learning rate decay
-opts.learningrate = @(t,momentum) eps.*f.^t*(1-momentum); 
-opts.momentum     = @(t) ifelse(t < T, p_i*(1-t/T)+(t/T)*p_f,p_f);
-opts.L2 = 0.00;
-dbn = dbnsetup(dbn, train_x, opts);
-dbn = dbntrain(dbn, train_x, opts,test_x);
-rbmsampledbnmovie(dbn,50,1000,'vid.avi',10,@visualize);
-```
+
+	load mnist_uint8;
+	train_x = double(train_x) / 255;
+	test_x  = double(test_x)  / 255;
+	rand('state',0)
+	dbn.sizes = [500];
+	opts.traintype = 'PCD';  % PCD | CD 
+	opts.numepochs =   100; % probably way to high?
+	opts.batchsize = 100;
+	opts.cdn = 1; % contrastive divergence
+	T = 50;       % momentum ramp up
+	p_f = 0.9;    % final momentum
+	p_i = 0.5;    % initial momentum
+	eps = 0.05;    % initial learning rate
+	f = 0.95;     % learning rate decay
+	opts.learningrate = @(t,momentum) eps.*f.^t*(1-momentum); 
+	opts.momentum     = @(t) ifelse(t < T, p_i*(1-t/T)+(t/T)*p_f,p_f);
+	opts.L2 = 0.00;
+	dbn = dbnsetup(dbn, train_x, opts);
+	dbn = dbntrain(dbn, train_x, opts,test_x);
+	rbmsampledbnmovie(dbn,50,1000,'vid.avi',10,@visualize);
