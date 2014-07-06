@@ -10,7 +10,7 @@ title:            ...
 tagline:          ...
 url:              http://skaae.github.io/
 paginate:         1
-baseurl:          http://skaae.github.io/
+baseurl:          /
 author:
   name:           Søren Sønderby
   url:            https://skaae.github.com
