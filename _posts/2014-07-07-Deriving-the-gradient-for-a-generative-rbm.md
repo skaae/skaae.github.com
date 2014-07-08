@@ -49,6 +49,9 @@ $$
 L_\text{generative} = -\sum_{t=1}^N log(P(\mathbf{x}_t))
 $$
 
+If we want to add regularization to the model we could add it to the loss function, a typical choice is L2 wich is to subtact the square of the norm times a constant controlling the regularization i.e $$\lambda \cdot \Vert\mathbf{W}\Vert^2$$ in which case the loss function becomes $$L_\text{generative} = -\sum_{t=1}^N log(P(\mathbf{x}_t)) - \lambda \cdot \Vert\mathbf{W}\Vert^2$$.
+
+
 We can minimize the log probability by find the gradient w.r.t. to the weights in the RBM. First we use the fact that $$f(g(a))' = f'(g)\cdot g'$$ 
 
 $$\begin{align}
@@ -124,7 +127,8 @@ $$\begin{align}
 \end{align}
 $$
 
-To use the update rule we need to get samples from $$p(\mathbf{h}\mid \mathbf{v})$$ is easy, clamp a data sample to the visible units and sample the hidden units. To get a sample from the model distribution $$p(\mathbf{h}, \mathbf{v})$$ is hard, one option is to start a a data vector and use gibbs sampling to sample the hidden and visible state many times.
+
+To use the update rules we need to get samples from $$p(\mathbf{h}\mid \mathbf{v})$$ is easy, clamp a data sample to the visible units and sample the hidden units. To get a sample from the model distribution $$p(\mathbf{h}, \mathbf{v})$$ is hard, one option is to start a a data vector and use gibbs sampling to sample the hidden and visible state many times.
 
 Currently Contrastive divergence (CD) is used to approximate  $$E_\text{model}$$. In CD we we only run the gibbs chain a few steps, typically one, before we sample $$E_\text{model}$$. To use contrastive divergence do:
 
