@@ -109,7 +109,7 @@ $$
 
 This is the expected value of $$\frac{\partial  E(\mathbf{v},\mathbf{h})}{\partial \theta}$$ under the model distribution, ususally called the *negative phase*. The postive phase lowers the energy of the training data, the negative phase assigns higher energy to other data the the model generate. 
 
-Using $$E_\mathbf{h}$$ to denote the expectation for the hidden vector (positive phase) and $$E_\mathbf{v,h}$$ to denote the expectation under the model distribution (negative phase) we get the following udate rule for the parameters:
+Using $$E_\mathbf{h}$$ to denote the expectation under the hidden vector (positive phase) and $$E_\mathbf{v,h}$$ to denote the expectation under the model distribution (negative phase) we get the following udate rule for the parameters:
 
 $$ 
 \frac{- \partial \log(P(\mathbf{x}))}{\partial \theta} =
