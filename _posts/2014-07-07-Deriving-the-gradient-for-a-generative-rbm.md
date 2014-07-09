@@ -109,21 +109,27 @@ $$
 
 This is the expected value of $$\frac{\partial  E(\mathbf{v},\mathbf{h})}{\partial \theta}$$ under the model distribution, ususally called the *negative phase*. The postive phase lowers the energy of the training data, the negative phase assigns higher energy to other data the the model generate. 
 
-Using $$E_\text{data}$$ to denote the expectation with the data vector clamped (positive phase) and $$E_\text{model}$$ to denote the expectation under the model distribution (negative phase) we get the following udate rule for the parameters:
+Using $$E_\mathbf{h}$$ to denote the expectation for the hidden vector (positive phase) and $$E_\mathbf{v,h}$$ to denote the expectation under the model distribution (negative phase) we get the following udate rule for the parameters:
 
 $$ 
-\frac{- \partial \log(P(\mathbf{x}))}{\partial \theta} =E_\text{data}\left[ \frac{\partial E(\mathbf{v},\mathbf{h})}{\partial \theta} \right] - E_\text{model}\left[ \frac{\partial E(\mathbf{v},\mathbf{h})}{\partial \theta} \right]
+\frac{- \partial \log(P(\mathbf{x}))}{\partial \theta} =
+E_\mathbf{h}\left[ 
+	\frac{\partial E(\mathbf{v},\mathbf{h})}{\partial \theta } \big\vert \mathbf{x}
+\right] - 
+	E_\mathbf{v,h}\left[ 
+	\frac{\partial E(\mathbf{v},\mathbf{h})}{\partial \theta} 
+\right]
 $$
 
 We can caluculate the partial derivaties of $$\mathbf{W,b,c}$$ to get the update rule for the weights and biases, i.e
 
 $$\begin{align}
-\frac{- \partial \log(P(\mathbf{x}))}{\partial \mathbf{W}} &=E_\text{data}\left[ -\mathbf{h}^T\mathbf{v} \right] - 
-															E_\text{model}\left[ -\mathbf{h}^T\mathbf{v} \right] \\
-\frac{- \partial \log(P(\mathbf{x}))}{\partial \mathbf{b}} &=E_\text{data}\left[ -\mathbf{v} \right] - 
-															E_\text{model}\left[ -\mathbf{v} \right] \\
-\frac{- \partial \log(P(\mathbf{x}))}{\partial \mathbf{c}} &=E_\text{data}\left[ -\mathbf{h} \right] - 
-															E_\text{model}\left[ -\mathbf{h} \right] \\
+\frac{- \partial \log(P(\mathbf{x}))}{\partial \mathbf{W}} &=E_\mathbf{h}\left[ -\mathbf{h}^T\mathbf{v} \right] - 
+															E_\mathbf{v,h}\left[ -\mathbf{h}^T\mathbf{v} \right] \\
+\frac{- \partial \log(P(\mathbf{x}))}{\partial \mathbf{b}} &=E_\mathbf{h}\left[ -\mathbf{v} \right] - 
+															E_\mathbf{v,h}\left[ -\mathbf{v} \right] \\
+\frac{- \partial \log(P(\mathbf{x}))}{\partial \mathbf{c}} &=E_\mathbf{h}\left[ -\mathbf{h} \right] - 
+															E_\mathbf{v,h}\left[ -\mathbf{h} \right]
 \end{align}
 $$
 
