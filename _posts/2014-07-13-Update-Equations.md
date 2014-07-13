@@ -16,12 +16,12 @@ o_{y,j}(\mathbf{x}_t) =& c_j + \sum_k W_{j,k} x_k + U_{j,y}
 \end{align*}
 $$
 
-Here $\Theta$ is  $\{\mathbf{c,U,W},\}$ and the size of the matrices are:
+Here $$\Theta$ is  $\{\mathbf{c,U,W},\}$$ and the size of the matrices are:
 
- * $\mathbf{c}$  [#hidden X 1]
- * $\mathbf{U}$ [#hidden X #classes] 
- * $\mathbf{W}$ [#hidden X #visible]
- * $y_t$ [#classes X 1]
- * $\mathbf{x_t}$ [#visible X 1]
+ * $$\mathbf{c}$$  [#hidden X 1]
+ * $$\mathbf{U}$$ [#hidden X #classes] 
+ * $$\mathbf{W}$$ [#hidden X #visible]
+ * $$y_t$$ [#classes X 1]
+ * $$\mathbf{x_t}$$ [#visible X 1]
 
 
